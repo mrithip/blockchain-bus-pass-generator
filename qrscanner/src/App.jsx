@@ -77,18 +77,18 @@ function App() {
           timestamp: new Date().toISOString()
         });
 
-        if (response.data.success) {
+        if (validationResponse.data.success) {
           setValidationResult({
             valid: true,
             message: '✅ Pass is Valid',
-            details: response.data.pass,
+            details: validationResponse.data.pass,
             status: 'success'
           });
         } else {
           setValidationResult({
             valid: false,
             message: '❌ Pass is Invalid',
-            reason: response.data.message,
+            reason: validationResponse.data.message,
             status: 'error'
           });
         }
