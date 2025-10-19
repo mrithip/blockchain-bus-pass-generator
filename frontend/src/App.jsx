@@ -14,6 +14,10 @@ import PassHistory from './components/PassHistory';
 import BlockchainExplorer from './components/BlockchainExplorer';
 import MempoolView from './components/MempoolView';
 import RequestApproval from './components/RequestApproval';
+import About from './components/About';
+import Contact from './components/Contact';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import Help from './components/Help';
 
 function App() {
   const { isAuthenticated, user, isAdmin, loading } = useAuth();
@@ -41,6 +45,11 @@ function App() {
           <Route path="/register" element={
             isAuthenticated ? <Navigate to="/dashboard" /> : <Register />
           } />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/help" element={<Help />} />
+          
           <Route path="/" element={<Navigate to="/dashboard" />} />
 
           {/* Protected Routes */}

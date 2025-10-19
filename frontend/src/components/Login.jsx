@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import { FiMail, FiLock } from 'react-icons/fi';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -33,91 +32,88 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 relative bg-white rounded-3xl shadow-2xl p-10 border border-gray-300">
-        
-        {/* Header */}
-        <div className="text-center space-y-3">
-          <div className="mx-auto h-16 w-16 bg-gray-900 rounded-full flex items-center justify-center shadow-lg">
-            <span className="text-white text-2xl">🚇</span>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center">
+          <div className="mx-auto h-12 w-12 bg-gray-900 rounded-lg flex items-center justify-center">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
           </div>
-          <h2 className="text-3xl font-extrabold text-gray-900">Welcome Back!</h2>
-          <p className="text-sm text-gray-700">
-            Sign in to access your <span className="font-semibold text-gray-900">Blockchain Bus Pass</span> system
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Welcome Back</h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Sign in to access your Blockchain Bus Pass system
           </p>
         </div>
 
-        {/* Form */}
-        <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow border border-gray-200" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-md">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
               {error}
             </div>
           )}
 
           <div className="space-y-4">
-            {/* Email */}
-            <div className="relative">
-              <FiMail className="absolute left-3 top-3 text-gray-500" size={20} />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email address"
-                className="pl-10 pr-3 py-3 w-full rounded-xl border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 placeholder-gray-400 transition-all"
-              />
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email address"
+                  className="pl-10 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
+                />
+              </div>
             </div>
 
-            {/* Password */}
-            <div className="relative">
-              <FiLock className="absolute left-3 top-3 text-gray-500" size={20} />
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-                className="pl-10 pr-3 py-3 w-full rounded-xl border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 placeholder-gray-400 transition-all"
-              />
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Password"
+                  className="pl-10 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Submit button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-gray-900 text-white font-semibold hover:bg-gray-700 transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 disabled:opacity-50"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
 
-          {/* Extra Links */}
-          <div className="flex justify-between text-sm text-gray-600 mt-2">
-            <Link to="/forgot-password" className="hover:text-gray-900 transition-colors">
-              {/* Forgot password? */}
-            </Link>
-            <Link to="/register" className="hover:text-gray-900 transition-colors">
+          <div className="text-center">
+            <Link to="/register" className="font-medium text-gray-600 hover:text-gray-900">
               Create Account
             </Link>
           </div>
-
-          {/* Social login placeholder */}
-          {/* <div className="mt-6 text-center text-gray-500 text-sm">
-            Or sign in with
-          </div>
-          <div className="flex justify-center gap-4 mt-2">
-            <button className="p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all shadow">
-              <span className="text-gray-900 font-bold">G</span>
-            </button>
-            <button className="p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all shadow">
-              <span className="text-gray-900 font-bold">f</span>
-            </button>
-          </div> */}
         </form>
       </div>
     </div>

@@ -22,7 +22,6 @@ const CreatePass = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
 
-  // Load Razorpay script on component mount
   useEffect(() => {
     const loadRazorpayScript = () => {
       return new Promise((resolve) => {
@@ -58,7 +57,6 @@ const CreatePass = () => {
         setSuccess('Bus pass created successfully!');
         updateUser({ ...user, tokens: user.tokens - 1 });
 
-        // Generate QR code for display
         if (result.data.pass.qrDataUri) {
           setQrCode(result.data.pass.qrDataUri);
         }
@@ -67,7 +65,6 @@ const CreatePass = () => {
           navigate('/user/qr');
         }, 2000);
       } else {
-        // Check if payment is required
         if (result.data.requiresPayment) {
           setShowPayment(true);
           await createPaymentOrder();
@@ -81,7 +78,6 @@ const CreatePass = () => {
       const errorData = error.response?.data;
 
       if (statusCode === 402 && errorData?.requiresPayment) {
-        // Payment required
         setShowPayment(true);
         await createPaymentOrder();
       } else {
@@ -94,7 +90,7 @@ const CreatePass = () => {
 
   const createPaymentOrder = async () => {
     try {
-      const result = await paymentAPI.createOrder(100); // ₹100 for bus pass
+      const result = await paymentAPI.createOrder(100);
       setPaymentOrder(result.data.order);
     } catch (error) {
       console.error('Create payment order error:', error);
@@ -120,7 +116,7 @@ const CreatePass = () => {
         email: user.email,
       },
       theme: {
-        color: '#F37254',
+        color: '#111827',
       },
     };
 
@@ -143,7 +139,6 @@ const CreatePass = () => {
         setSuccess('Payment successful! Bus pass created.');
         setShowPayment(false);
 
-        // Generate QR code for display
         if (verifyResult.data.pass.qrDataUri) {
           setQrCode(verifyResult.data.pass.qrDataUri);
         }
@@ -167,169 +162,176 @@ const CreatePass = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-        <div className="px-6 py-8">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Create Bus Pass</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Generate a blockchain-verified bus pass QR code
-            </p>
-          </div>
-
-          {error && (
-            <div className="mb-6 bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-md">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-6 bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded-md">
-              {success}
-            </div>
-          )}
-
-          {showPayment && (
-            <div className="mb-6 bg-yellow-50 border border-yellow-300 text-yellow-700 px-4 py-3 rounded-md">
-              <div className="flex">
-                <div className="ml-3">
-                  <p className="text-sm">
-                    Insufficient tokens! You need 1 token to create a bus pass.
-                    Pay ₹100 to proceed immediately.
-                  </p>
-                </div>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
+          <div className="px-6 py-8">
+            <div className="mb-8 text-center">
+              <div className="mx-auto h-12 w-12 bg-gray-900 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                </svg>
               </div>
-              <div className="mt-4">
-                <button
-                  onClick={handleRazorpayPayment}
-                  disabled={loading || !paymentOrder}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50"
-                >
-                  {loading ? 'Processing...' : 'Pay ₹100 with Razorpay'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {qrCode && (
-            <div className="mb-6 text-center">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Your Bus Pass QR Code</h3>
-              <img src={qrCode} alt="Bus Pass QR Code" className="mx-auto border rounded-lg" />
+              <h1 className="text-2xl font-bold text-gray-900">Create Bus Pass</h1>
               <p className="mt-2 text-sm text-gray-600">
-                This QR code is valid until {new Date(formData.expiryDate).toLocaleDateString()}
+                Generate a blockchain-verified bus pass QR code
               </p>
             </div>
-          )}
 
-          {!qrCode && (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    required
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
-                    placeholder="Enter your full name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
+            {error && (
+              <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
+                {success}
+              </div>
+            )}
+
+            {showPayment && (
+              <div className="mb-6 bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-md">
+                <div className="flex">
+                  <div className="ml-3">
+                    <p className="text-sm">
+                      Insufficient tokens! You need 1 token to create a bus pass.
+                      Pay ₹100 to proceed immediately.
+                    </p>
+                  </div>
                 </div>
-
-                <div>
-                  <label htmlFor="route" className="block text-sm font-medium text-gray-700">
-                    Route
-                  </label>
-                  <select
-                    name="route"
-                    id="route"
-                    required
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
-                    value={formData.route}
-                    onChange={handleChange}
+                <div className="mt-4">
+                  <button
+                    onClick={handleRazorpayPayment}
+                    disabled={loading || !paymentOrder}
+                    className="bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
                   >
-                    <option value="">Select route</option>
-                    <option value="A-B">Route A to B</option>
-                    <option value="B-C">Route B to C</option>
-                    <option value="C-D">Route C to D</option>
-                    <option value="D-A">Route D to A</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="aadhar" className="block text-sm font-medium text-gray-700">
-                    Aadhar Number
-                  </label>
-                  <input
-                    type="text"
-                    name="aadhar"
-                    id="aadhar"
-                    required
-                    pattern="[0-9]{12}"
-                    maxLength="12"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
-                    placeholder="12-digit Aadhar number"
-                    value={formData.aadhar}
-                    onChange={handleChange}
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Your Aadhar will be securely hashed
-                  </p>
-                </div>
-
-                <div>
-                  <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700">
-                    Expiry Date
-                  </label>
-                  <input
-                    type="date"
-                    name="expiryDate"
-                    id="expiryDate"
-                    required
-                    min={calculateExpiryDate()}
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
-                    value={formData.expiryDate}
-                    onChange={handleChange}
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Minimum 1 month validity
-                  </p>
+                    {loading ? 'Processing...' : 'Pay ₹100 with Razorpay'}
+                  </button>
                 </div>
               </div>
+            )}
 
-              <div className="border-t border-gray-200 pt-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="text-sm">
-                      <span className="font-medium">Cost: </span>
-                      {user?.tokens > 0 ? (
-                        <span className="text-green-600">1 token</span>
-                      ) : (
-                        <span className="text-red-600">₹100 (payment required)</span>
-                      )}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Your balance: {user?.tokens} tokens
+            {qrCode && (
+              <div className="mb-6 text-center">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Your Bus Pass QR Code</h3>
+                <img src={qrCode} alt="Bus Pass QR Code" className="mx-auto border border-gray-300 rounded-lg" />
+                <p className="mt-2 text-sm text-gray-600">
+                  This QR code is valid until {new Date(formData.expiryDate).toLocaleDateString()}
+                </p>
+              </div>
+            )}
+
+            {!qrCode && (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      required
+                      className="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
+                      placeholder="Enter your full name"
+                      value={formData.name}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="route" className="block text-sm font-medium text-gray-700">
+                      Route
+                    </label>
+                    <select
+                      name="route"
+                      id="route"
+                      required
+                      className="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
+                      value={formData.route}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select route</option>
+                      <option value="A-B">Route A to B</option>
+                      <option value="B-C">Route B to C</option>
+                      <option value="C-D">Route C to D</option>
+                      <option value="D-A">Route D to A</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="aadhar" className="block text-sm font-medium text-gray-700">
+                      Aadhar Number
+                    </label>
+                    <input
+                      type="text"
+                      name="aadhar"
+                      id="aadhar"
+                      required
+                      pattern="[0-9]{12}"
+                      maxLength="12"
+                      className="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
+                      placeholder="12-digit Aadhar number"
+                      value={formData.aadhar}
+                      onChange={handleChange}
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Your Aadhar will be securely hashed
+                    </p>
+                  </div>
+
+                  <div>
+                    <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700">
+                      Expiry Date
+                    </label>
+                    <input
+                      type="date"
+                      name="expiryDate"
+                      id="expiryDate"
+                      required
+                      min={calculateExpiryDate()}
+                      className="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2 border"
+                      value={formData.expiryDate}
+                      onChange={handleChange}
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Minimum 1 month validity
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-200 pt-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="text-sm">
+                        <span className="font-medium">Cost: </span>
+                        {user?.tokens > 0 ? (
+                          <span className="text-green-600">1 token</span>
+                        ) : (
+                          <span className="text-red-600">₹100 (payment required)</span>
+                        )}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        Your balance: {user?.tokens} tokens
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                >
-                  {loading ? 'Creating Pass...' : 'Create Bus Pass'}
-                </button>
-              </div>
-            </form>
-          )}
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+                  >
+                    {loading ? 'Creating Pass...' : 'Create Bus Pass'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>
