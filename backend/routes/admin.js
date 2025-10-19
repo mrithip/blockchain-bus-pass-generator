@@ -195,10 +195,17 @@ router.post('/tokens/sell', authenticateToken, requireAdmin, async (req, res) =>
   }
 });
 
-// Get all users
+// Get all users with system statistics
 router.get('/users', authenticateToken, requireAdmin, async (req, res) => {
   try {
+    // Get users data
     const users = await User.find({}, '-passwordHash').sort({ createdAt: -1 });
+    const totalUsers = users.length;
+
+    // Get system statistics
+    const totalPasses = await Pass.countDocuments();
+    const totalBlocks = req.app.locals.blockchain ? (await req.app.locals.blockchain.getAllBlocks()).length : 1; // Including genesis block
+    const mempoolCount = req.app.locals.blockchain ? (await req.app.locals.blockchain.getMempool()).length : 0;
 
     const userList = users.map(user => ({
       id: user._id,
@@ -213,7 +220,13 @@ router.get('/users', authenticateToken, requireAdmin, async (req, res) => {
 
     res.json({
       success: true,
-      users: userList
+      users: userList,
+      stats: {
+        totalUsers,
+        totalPasses,
+        totalBlocks,
+        mempoolCount
+      }
     });
 
   } catch (error) {
@@ -351,8 +364,8 @@ router.put('/mining-requests/:userId/reject', authenticateToken, requireAdmin, a
   }
 });
 
-// Blockchain validation
-router.get('/validate-chain', authenticateToken, requireAdmin, async (req, res) => {
+// Blockchain validation - allow all authenticated users
+router.get('/validate-chain', authenticateToken, async (req, res) => {
   try {
     const blockchain = req.app.locals.blockchain;
     const isValid = await blockchain.isChainValid();

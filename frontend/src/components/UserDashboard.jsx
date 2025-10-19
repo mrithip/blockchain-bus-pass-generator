@@ -72,6 +72,11 @@ const UserDashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
+          <img
+            src="/src/assets/blockchain.png"
+            alt="Blockchain Logo"
+            className="mx-auto h-16 w-16 rounded-lg mb-4 animate-pulse"
+          />
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
           <p className="mt-4 text-lg text-gray-600">Loading your QR code...</p>
         </div>
@@ -253,7 +258,6 @@ const UserDashboard = () => {
                     <li>• Show this QR code to the conductor at the bus stop</li>
                     <li>• The conductor will scan it to verify your pass</li>
                     <li>• Make sure the pass hasn't expired</li>
-                    <li>• One pass = One journey</li>
                   </ul>
                 </div>
               </div>

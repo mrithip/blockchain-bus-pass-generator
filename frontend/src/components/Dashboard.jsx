@@ -103,11 +103,11 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="mb-8 text-center">
-            <div className="mx-auto h-16 w-16 bg-gray-900 rounded-full flex items-center justify-center mb-6">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
+            <img
+              src="/src/assets/blockchain.png"
+              alt="Blockchain Logo"
+              className="mx-auto h-16 w-16 rounded-xl bg-white p-3 mb-6 shadow-lg"
+            />
             <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
               Welcome back, <span className="font-semibold text-gray-900">{user?.name}</span>!

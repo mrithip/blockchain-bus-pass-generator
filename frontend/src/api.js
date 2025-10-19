@@ -66,6 +66,12 @@ export const adminAPI = {
   rejectMiningRequest: (userId) => api.put(`/admin/mining-requests/${userId}/reject`),
 };
 
+// Common API - accessible to all authenticated users
+export const commonAPI = {
+  validateChain: () => api.get('/admin/validate-chain'),
+  exploreChain: () => api.get('/admin/blocks'),
+};
+
 // Payment API
 export const paymentAPI = {
   createOrder: (amount) => api.post('/payments/order', { amount }),

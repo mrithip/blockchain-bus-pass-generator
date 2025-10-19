@@ -43,11 +43,11 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex-shrink-0 mr-10">
               <Link to="/dashboard" className="text-2xl font-bold text-gray-900 flex items-center whitespace-nowrap hover:text-gray-700 transition-colors duration-200">
-                <div className="h-12 w-12 bg-gray-900 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
+                <img
+                  src="/src/assets/blockchain.png"
+                  alt="Blockchain Logo"
+                  className="h-12 w-12 mr-3 rounded-xl shadow-lg bg-white p-1"
+                />
                 Blockchain Bus Pass
               </Link>
             </div>

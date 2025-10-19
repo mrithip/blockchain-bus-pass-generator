@@ -22,15 +22,15 @@ const AdminDashboard = () => {
       setLoading(true);
       const usersResponse = await adminAPI.getUsers();
       const usersData = usersResponse.data.users;
+      const statsData = usersResponse.data.stats;
 
       setUsers(usersData);
       setStats({
-        totalUsers: usersData.length,
-        totalPasses: 0,
-        totalBlocks: 0,
-        mempoolCount: 0
+        totalUsers: statsData.totalUsers,
+        totalPasses: statsData.totalPasses,
+        totalBlocks: statsData.totalBlocks,
+        mempoolCount: statsData.mempoolCount
       });
-
     } catch (error) {
       console.error('Fetch dashboard data error:', error);
       setError('Failed to load dashboard data');
@@ -39,18 +39,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleApproveMining = async (userId) => {
-    try {
-      await adminAPI.approveMiningPermission(userId);
-      setUsers(users.map(user =>
-        user.id === userId ? { ...user, canMine: true } : user
-      ));
-      alert('Mining permission granted successfully!');
-    } catch (error) {
-      console.error('Approve mining error:', error);
-      alert('Failed to approve mining permission');
-    }
-  };
+
 
   const handleTransferTokens = async (userId, amount) => {
     try {
@@ -217,14 +206,6 @@ const AdminDashboard = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                      {!user.canMine && (
-                        <button
-                          onClick={() => handleApproveMining(user.id)}
-                          className="text-gray-600 hover:text-gray-900 font-medium"
-                        >
-                          Grant Mining
-                        </button>
-                      )}
                       <button
                         onClick={() => handleTransferTokens(user.id)}
                         className="text-gray-600 hover:text-gray-900 font-medium"
