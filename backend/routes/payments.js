@@ -201,20 +201,53 @@ router.post('/verify', authenticateToken, [
   }
 });
 
-// Verify QR code (conductor endpoint)
+// Verify QR code (conductor endpoint) - using passHash from QR data
 const verifyQR = async (req, res) => {
   try {
-    const { passId, passHash, userId } = req.body;
+    // Extract QR data - could be JSON string or just passHash
+    let qrData = req.body.qrData || req.body.passId || req.body.qrDataUri;
 
-    if (!passId || !passHash) {
+    if (!qrData) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid QR code data'
+        message: 'No QR data provided'
       });
     }
 
-    // Get pass from database
-    const pass = await Pass.findById(passId);
+    let passHash, passId;
+
+    // Try to parse as JSON if it's a QR code data string
+    try {
+      const parsedData = typeof qrData === 'string' ? JSON.parse(qrData) : qrData;
+      passHash = parsedData.passHash;
+      passId = parsedData.passId;
+    } catch {
+      // If not JSON, assume it's just the passHash
+      if (!req.body.passHash) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid QR data format'
+        });
+      }
+      passHash = req.body.passHash;
+      passId = req.body.passId;
+    }
+
+    if (!passHash) {
+      return res.status(400).json({
+        success: false,
+        message: 'Pass hash not found in QR data'
+      });
+    }
+
+    // Get pass from database by passHash if passId not available
+    let pass;
+    if (passId) {
+      pass = await Pass.findById(passId);
+    } else {
+      pass = await Pass.findOne({ passHash });
+    }
+
     if (!pass) {
       return res.status(404).json({
         success: false,
@@ -222,7 +255,7 @@ const verifyQR = async (req, res) => {
       });
     }
 
-    // Check if pass is mined (confirmed)
+    // Check if pass is mined (confirmed on blockchain)
     if (!pass.mined) {
       return res.status(400).json({
         success: false,
@@ -230,15 +263,18 @@ const verifyQR = async (req, res) => {
       });
     }
 
-    // Check expiry
-    if (new Date() > new Date(pass.expiryDate)) {
+    // Check expiry date - block validation if expired
+    const currentDate = new Date();
+    const expiryDate = new Date(pass.expiryDate);
+
+    if (currentDate > expiryDate) {
       return res.status(400).json({
         success: false,
-        message: 'Bus pass has expired'
+        message: `Bus pass expired on ${expiryDate.toLocaleDateString()}`
       });
     }
 
-    // Verify hash exists in blockchain
+    // Verify hash exists in blockchain using the isPassValid method
     const blockchain = req.app.locals.blockchain;
     const isValidOnChain = await blockchain.isPassValid(passHash);
 
@@ -257,7 +293,9 @@ const verifyQR = async (req, res) => {
         name: pass.name,
         route: pass.route,
         expiryDate: pass.expiryDate,
-        verified: true
+        blockIndex: pass.blockIndex,
+        verified: true,
+        status: 'valid'
       }
     });
 
