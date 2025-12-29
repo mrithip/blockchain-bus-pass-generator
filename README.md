@@ -250,7 +250,7 @@ REACT_APP_RAZORPAY_KEY_ID=rzp_test_your-key-id
 - **CORS Configuration**: Controlled cross-origin resource sharing
 - **Environment Isolation**: Secure separation of sensitive configuration
 
-## 📱 Responsive Design System
+## Responsive Design System
 
 ### Mobile-First Development
 - **Progressive Enhancement**: Optimized experience across all device sizes
