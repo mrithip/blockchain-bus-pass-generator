@@ -1,37 +1,37 @@
-# 🚇 Blockchain Bus Pass System
+# Blockchain Bus Pass System
 
 A revolutionary transportation solution that leverages blockchain technology for secure, transparent, and efficient public transit passes. Built with a custom Proof-of-Work blockchain, this system enables users to create, manage, and validate digital bus passes while participating in a mining ecosystem.
 
-## 🌟 Features
+## Features
 
-### 🚇 **Bus Pass Management**
+### **Bus Pass Management**
 - **Secure QR Code Generation**: Blockchain-verified digital passes with cryptographic signatures
 - **Multi-payment Support**: Token-based payments or cash via Razorpay gateway
 - **Real-time Conductor Validation**: Instant QR scanning with blockchain verification
 - **Comprehensive Pass History**: Complete audit trail of all transactions and interactions
 - **Hash-based Security**: Pass validity secured by SHA256 cryptographic hashing
 
-### ⛏️ **Blockchain Mining Ecosystem**
+### **Blockchain Mining Ecosystem**
 - **Custom Proof-of-Work Mining**: Full SHA256 implementation with adjustable difficulty
 - **Permission-based Mining Access**: Structured approval system for miner participation
 - **Token Reward System**: Earn utility tokens through blockchain mining activities
 - **Decentralized Verification**: Trustless pass validation through distributed consensus
 - **Mempool Management**: Transaction queuing and block formation processes
 
-### 👑 **Admin Control Panel**
+### **Admin Control Panel**
 - **Mining Request Approval System**: Comprehensive review workflow for miner permissions
 - **Real-time User Management**: Live monitoring of users, tokens, and permissions
 - **Token Distribution Mechanisms**: Admin tools for token transfers and economic management
 - **System Health Monitoring**: Detailed oversight of blockchain and database operations
 - **Live Statistics Dashboard**: Real-time metrics for passes, blocks, and transactions
 
-### 🔗 **Public Blockchain Explorer**
+### **Public Blockchain Explorer**
 - **Complete Transparency**: Full transaction ledger accessible to all authenticated users
 - **Independent Chain Validation**: Mathematical verification of blockchain integrity by any user
 - **Real-time Block Exploration**: Live view of mining activities and transaction confirmations
 - **Transaction Details**: Complete history of pass creation, mining rewards, and token transfers
 
-## 🖼️ Branding & Design
+## Branding & Design
 
 ### **Consistent Visual Identity**
 - **Custom Blockchain Logo**: Professional branding integrated across navbar, footer, and loading screens
@@ -45,7 +45,7 @@ A revolutionary transportation solution that leverages blockchain technology for
 - **Accessibility Features**: Clear typography, proper contrast ratios, and semantic HTML
 - **Progressive Enhancement**: Graceful degradation for older devices and networks
 
-## 🛠️ Technical Architecture
+## Technical Architecture
 
 ### Frontend Stack
 - **React 18** - Modern component-based UI framework with hooks
@@ -68,7 +68,7 @@ A revolutionary transportation solution that leverages blockchain technology for
 - **Chain Validation Algorithms** - Mathematical verification of blockchain integrity and continuity
 - **Genesis Block System** - Automated creation of initial blockchain state on deployment
 
-## 🚀 Installation & Quick Start
+## Installation & Quick Start
 
 ### System Prerequisites
 - **Node.js 16+** - Runtime environment for both frontend and backend
@@ -123,7 +123,7 @@ A revolutionary transportation solution that leverages blockchain technology for
    - Frontend: `http://localhost:5173`
    - Backend API: `http://localhost:5000`
 
-## 📋 Complete API Documentation
+## Complete API Documentation
 
 ### Authentication Endpoints
 ```http
@@ -189,7 +189,7 @@ REACT_APP_API_URL=http://localhost:5000/api
 REACT_APP_RAZORPAY_KEY_ID=rzp_test_your-key-id
 ```
 
-## 👥 User Roles & Access Control
+## User Roles & Access Control
 
 ### Regular Users
 - ✅ Create and manage personal bus passes
@@ -213,7 +213,7 @@ REACT_APP_RAZORPAY_KEY_ID=rzp_test_your-key-id
 - ✅ Monitor system statistics and health
 - ✅ Complete oversight of all blockchain operations
 
-## 💰 Token Economy & Economic Model
+## Token Economy & Economic Model
 
 ### Mining Incentives
 - **Block Mining Reward**: 2 utility tokens per successfully mined block
@@ -230,7 +230,7 @@ REACT_APP_RAZORPAY_KEY_ID=rzp_test_your-key-id
 - **System Incentives**: Encouraging miner participation and network security
 - **Value Storage**: Decentralized utility token with blockchain-backed value
 
-## 🔒 Security Implementation
+## Security Implementation
 
 ### Authentication & Authorization
 - **JWT Token Authentication**: Stateless session management with configurable expiry
@@ -264,7 +264,7 @@ REACT_APP_RAZORPAY_KEY_ID=rzp_test_your-key-id
 - **Accessibility Standards**: WCAG 2.1 AA compliance with screen reader support
 - **Performance Optimized**: Code splitting and lazy loading for fast initial loads
 
-## 🚀 Production Deployment
+## Production Deployment
 
 ### Backend Deployment Steps
 ```bash
@@ -301,7 +301,7 @@ npm run preview
 - **Database**: MongoDB Atlas (already configured)
 - **Domain/CDN**: Cloudflare for DNS and caching
 
-## 🤝 Development & Contribution
+## Development & Contribution
 
 ### Development Workflow
 1. Fork the repository from GitHub
@@ -328,7 +328,7 @@ npm run test:e2e
 - **Git Hooks**: Automatic linting and testing on commits
 - **TypeScript Support**: Optional but recommended for new features
 
-## 📄 Project Structure
+## Project Structure
 
 ```
 blockchain-bus-pass/
@@ -353,11 +353,11 @@ blockchain-bus-pass/
 └── package.json               # Workspace configuration
 ```
 
-## 📜 Licensing & Legal
+## Licensing & Legal
 
 This project is distributed under the MIT License, allowing free use and modification for both commercial and non-commercial purposes. See LICENSE file for complete terms.
 
-## 🆘 Support & Resources
+## Support & Resources
 
 ### Technical Support
 - **Email**: support@blockbus.com
@@ -377,17 +377,17 @@ This project is distributed under the MIT License, allowing free use and modific
 
 ---
 
-## 📰 Release Notes
+## Release Notes
 
 ### Version 1.0.0 - Complete System Launch
-- 🚀 Full blockchain integration with Proof-of-Work mining
-- 📱 Responsive mobile-first user interface
-- 💰 Token economy with mining rewards and pass payments
-- 👑 Comprehensive admin control panel
-- 🔗 Public blockchain explorer with validation tools
-- 💳 Razorpay payment gateway integration
-- 🔒 Enterprise-grade security implementation
-- ⚡ Production-ready deployment configuration
+- Full blockchain integration with Proof-of-Work mining
+- Responsive mobile-first user interface
+- Token economy with mining rewards and pass payments
+- Comprehensive admin control panel
+- Public blockchain explorer with validation tools
+- Razorpay payment gateway integration
+- Enterprise-grade security implementation
+- Production-ready deployment configuration
 
 ### Roadmap (Future Releases)
 - **Version 1.1.0**: Mobile app development, advanced analytics
@@ -396,9 +396,9 @@ This project is distributed under the MIT License, allowing free use and modific
 
 ---
 
-**🛡️ Built with Enterprise-Grade Security**  
-**🌐 Powered by Blockchain Transparency**  
-**⚡ Performance Optimized for Scale**  
-**📱 Mobile-First User Experience**
+**Built with Enterprise-Grade Security**  
+**Powered by Blockchain Transparency**  
+**Performance Optimized for Scale**  
+**Mobile-First User Experience**
 
-*Blockchain Bus Pass System - Revolutionizing Public Transportation Through Decentralized Technology* 🚇🔗💎
+*Blockchain Bus Pass System - Revolutionizing Public Transportation Through Decentralized Technology*
