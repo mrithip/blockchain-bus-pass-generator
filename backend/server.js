@@ -69,6 +69,17 @@ mongoose.connect(process.env.MONGODB_URI)
   })
   .then(() => {
     console.log('Genesis block created');
+    // Create required indexes for data integrity and query performance
+    const db = mongoose.connection.db;
+    return Promise.all([
+      db.collection('users').createIndex({ email: 1 }, { unique: true }).catch(() => null),
+      db.collection('payments').createIndex({ paymentId: 1 }, { unique: true }).catch(() => null),
+      db.collection('blocks').createIndex({ index: 1 }, { unique: true }).catch(() => null),
+      db.collection('mempools').createIndex({ txId: 1 }, { unique: true }).catch(() => null),
+    ]);
+  })
+  .then(() => {
+    console.log('Database indexes created successfully');
   })
   .catch(error => {
     console.error('Database connection error:', error);
