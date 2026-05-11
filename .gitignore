@@ -138,3 +138,7 @@ docs/build/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+__pycache__/
+reports/
+.pytest_cache
+.venv
