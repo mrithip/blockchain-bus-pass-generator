@@ -6,7 +6,7 @@ const User = require('../models/User');
 
 class Blockchain {
   constructor() {
-    this.difficulty = 1; // Hash must start with this many zeros
+    this.difficulty = parseInt(process.env.MINING_DIFFICULTY, 10) || 1;
     this.reward = 2; // Tokens per block
   }
 

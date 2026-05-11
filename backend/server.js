@@ -6,7 +6,20 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
-// Import models and blockchain
+// Delay MongoDB operations in test mode to simulate latency
+const TEST_MONGO_LATENCY_MS = parseInt(process.env.TEST_MONGO_LATENCY_MS, 10) || 0;
+if (TEST_MONGO_LATENCY_MS > 0) {
+  mongoose.plugin((schema) => {
+    const delay = function (next) {
+      setTimeout(next, TEST_MONGO_LATENCY_MS);
+    };
+    ['save', 'validate', 'find', 'findOne', 'findOneAndUpdate', 'updateOne', 'updateMany', 'deleteOne', 'deleteMany'].forEach((hook) => {
+      schema.pre(hook, delay);
+    });
+  });
+}
+
+// Import models and blockchain after latency plugin is attached
 const User = require('./models/User');
 const Pass = require('./models/Pass');
 const Payment = require('./models/Payment');
@@ -30,6 +43,19 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS, 10) || 25000;
+app.use((req, res, next) => {
+  req.setTimeout(REQUEST_TIMEOUT_MS, () => {
+    if (!res.headersSent) {
+      res.status(503).json({
+        success: false,
+        message: 'Service unavailable due to database timeout'
+      });
+    }
+  });
+  next();
+});
 
 // Initialize blockchain
 const blockchain = new Blockchain();

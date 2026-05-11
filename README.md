@@ -257,3 +257,20 @@ blockchain-bus-pass/
 ## License
 
 This project is distributed under the MIT License. See the LICENSE file for full terms.
+
+## Quality Assurance & Blockchain Audit
+
+This repository includes a comprehensive automation suite for functional, security, and blockchain integrity testing.
+
+- Pytest test suites for UI/UX validation, RBAC and API security, blockchain consistency, rate-limiting, and crash recovery.
+- Selenium Page Object Model for structured browser-based acceptance testing.
+- Requests-based smoke tests for authentication, pass creation, and tamper detection.
+- MongoDB-assisted audits for immutability and mempool validation.
+
+### Running the QA Suite
+
+```bash
+./automation_master.sh
+```
+
+The script installs Python dependencies, updates `.gitignore`, and generates a full HTML report at `reports/full_audit_report.html`.

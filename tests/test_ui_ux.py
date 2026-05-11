@@ -115,3 +115,53 @@ def test_login_with_expired_jwt_redirects_to_login(browser, ui_base_url):
     browser.get(f'{ui_base_url}/dashboard')
 
     assert '/login' in browser.current_url or 'login' in browser.page_source.lower()
+
+
+def test_qr_image_is_visible_and_not_obscured(browser, ui_base_url, api_base_url, fresh_user, valid_payment_credentials):
+    session = __import__('requests').Session()
+    session.headers.update({'Content-Type': 'application/json', 'Authorization': f'Bearer {fresh_user["token"]}'})
+    order_resp = session.post(f'{api_base_url}/payments/order', json={'amount': 100}, timeout=15)
+    assert order_resp.status_code == 200
+    order_data = order_resp.json()['order']
+
+    signature = __import__('hmac').new(
+        valid_payment_credentials.encode('utf-8'),
+        f"{order_data['id']}|payment_test".encode('utf-8'),
+        __import__('hashlib').sha256
+    ).hexdigest()
+
+    verify_resp = session.post(
+        f'{api_base_url}/payments/verify',
+        json={
+            'razorpay_order_id': order_data['id'],
+            'razorpay_payment_id': 'payment_test',
+            'razorpay_signature': signature,
+            'passData': {
+                'name': 'QR Visibility',
+                'route': 'A-B',
+                'aadhar': '999999999999',
+                'expiryDate': (datetime.date.today() + datetime.timedelta(days=60)).isoformat()
+            }
+        },
+        timeout=15
+    )
+    assert verify_resp.status_code == 200
+
+    browser.get(f'{ui_base_url}/login')
+    browser.execute_script(f"localStorage.setItem('token', '{fresh_user['token']}');")
+    user_json = json.dumps(fresh_user['user']).replace('"', '\\"')
+    browser.execute_script(f'localStorage.setItem("user", "{user_json}");')
+    browser.get(f'{ui_base_url}/user/qr')
+
+    qr_image = browser.find_element(By.XPATH, "//img[contains(@src, 'data:image/png')]")
+    assert qr_image.is_displayed()
+    assert qr_image.size['width'] > 0
+    assert qr_image.size['height'] > 0
+
+
+def test_dark_mode_localstorage_persists_after_refresh(browser, ui_base_url):
+    browser.get(f'{ui_base_url}/login')
+    browser.execute_script("localStorage.setItem('theme', 'dark');")
+    browser.refresh()
+    theme_value = browser.execute_script("return localStorage.getItem('theme');")
+    assert theme_value == 'dark'
