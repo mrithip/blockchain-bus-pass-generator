@@ -60,31 +60,38 @@ app.use((req, res, next) => {
 // Initialize blockchain
 const blockchain = new Blockchain();
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
+// Database connection and server startup
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('MongoDB connected successfully');
+
     // Create genesis block on startup
-    return blockchain.createGenesisBlock();
-  })
-  .then(() => {
+    await blockchain.createGenesisBlock();
     console.log('Genesis block created');
+
     // Create required indexes for data integrity and query performance
     const db = mongoose.connection.db;
-    return Promise.all([
-      db.collection('users').createIndex({ email: 1 }, { unique: true }).catch(() => null),
-      db.collection('payments').createIndex({ paymentId: 1 }, { unique: true }).catch(() => null),
-      db.collection('blocks').createIndex({ index: 1 }, { unique: true }).catch(() => null),
-      db.collection('mempools').createIndex({ txId: 1 }, { unique: true }).catch(() => null),
+    await Promise.all([
+      db.collection('users').createIndex({ email: 1 }, { unique: true }),
+      db.collection('payments').createIndex({ paymentId: 1 }, { unique: true }),
+      db.collection('blocks').createIndex({ index: 1 }, { unique: true }),
+      db.collection('mempools').createIndex({ txId: 1 }, { unique: true }),
     ]);
-  })
-  .then(() => {
-    console.log('Database indexes created successfully');
-  })
-  .catch(error => {
-    console.error('Database connection error:', error);
+    console.log('Database indexes created and verified successfully');
+
+    // Start server after database is fully ready
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server is running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  } catch (error) {
+    console.error('Database connection or initialization error:', error);
     process.exit(1);
-  });
+  }
+};
+
+startServer();
 
 // Make blockchain available in all routes
 app.locals.blockchain = blockchain;
@@ -122,11 +129,6 @@ app.use((req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-});
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
